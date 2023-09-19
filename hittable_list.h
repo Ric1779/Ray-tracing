@@ -3,8 +3,8 @@
 
 #include "hittable.h"
 
-#include <vector>
 #include <memory>
+#include <vector>
 
 using std::shared_ptr;
 using std::make_shared;
@@ -29,8 +29,10 @@ class hittable_list : public hittable{
 
             for ( const auto& object : objects){
                 if ( object->hit(r, ray_tmin, closest_so_far, temp_rec)){
+                    // temp_rec is used to call objec->hit, if it's a hit then the temp_rec is copied to rec
                     hit_anything = true;
                     closest_so_far = temp_rec.t;
+                    rec = temp_rec;
                 }
             }
             return hit_anything;
