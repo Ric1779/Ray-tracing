@@ -1,2 +1,3 @@
 *.exe
 pointer_test.cpp
+.vscode/
