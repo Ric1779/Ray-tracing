@@ -2,11 +2,16 @@
 #define HITTABLE_H
 
 #include "ray.h"
+#include "rtweekend.h"
 
+class material;
+
+// hit_record is just a way to stuff a bunch of arguments into a class so we can send them as a group.
 class hit_record{
     public:
         point3 p;
         vec3 normal;
+        shared_ptr<material> mat;
         double t;
         bool front_face;
 

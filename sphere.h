@@ -8,9 +8,11 @@ class sphere: public hittable{
     private:
         double radius;
         point3 center;
+        shared_ptr<material> mat;  // material class hasn't been included and it still works WHY?
 
     public:
-        sphere(point3 _center, double _radius) : radius(_radius), center(_center) {}
+        sphere(point3 _center, double _radius, shared_ptr<material> _material) 
+        : radius(_radius), center(_center), mat(_material) {}
 
         bool hit(const ray& r, interval ray_t, hit_record& rec) const override {
             vec3 oc = r.origin() - center;
