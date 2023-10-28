@@ -107,14 +107,14 @@ class camera{
         }
 
         vec3 pixel_sample_square() const {
-            // Returns a random point in the square surrounding a pixel at the origin.
+            // Returns a random point in the square surrounding a pixel at the origin. 'Performs Antialiasing'
             auto px = -0.5 + random_double();
             auto py = -0.5 + random_double();
             return (px * pixel_delta_u) + (py * pixel_delta_v);
         }
 
         point3 defocus_disk_sample() const {
-            // Returns a random point in the camera defocus disk.
+            // Returns a random point in the camera defocus disk. 'Performs defocus blur or depth of field'
             auto p = random_in_unit_disk();
             return center + (p[0] * defocus_disk_u) + (p[1] * defocus_disk_v);
         }

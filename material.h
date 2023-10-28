@@ -4,6 +4,7 @@
 #include "rtweekend.h"
 #include "color.h"
 #include "hittable.h"
+#include "texture.h"
 
 // Doubt: material has hit_record in it and hit_record has material in it, how is that supposed to work??
 
@@ -15,22 +16,26 @@ class material {
             const ray& r_in, const hit_record& rec, color& attenuation, ray& scattered) const = 0;
 };
 
+// accurate representation of the real diffuse object is the lambertian distribution, 
+// so rather than randomly reflecting the colliding ray, we make use of lambertian distribution 
 class lambertian : public material {
     private:
-        color albedo;
+        shared_ptr<texture> albedo;
     public:
-        lambertian(const color& a) : albedo(a) {}
+        lambertian(const color& a) : albedo(make_shared<solid_color>(a)) {}
+        lambertian(shared_ptr<texture> a) : albedo(a) {}
 
         bool scatter(const ray& r_in, const hit_record& rec, color& attenuation, ray& scattered)
         const override {
             auto scatter_direction = rec.normal + random_unit_vector();
+            // auto scatter_direction = random_on_hemisphere(rec.normal);
 
             // Catch degenerate scatter direction
             if (scatter_direction.near_zero())
                 scatter_direction = rec.normal;
 
             scattered = ray(rec.p, scatter_direction, r_in.time());
-            attenuation = albedo;
+            attenuation = albedo->value(rec.u, rec.v, rec.p);
             return true;
         }
 

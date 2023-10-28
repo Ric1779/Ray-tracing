@@ -3,6 +3,7 @@
 
 #include "rtweekend.h"
 
+// axis aligned bounding boxes
 class aabb {
     public:
         interval x, y, z;
