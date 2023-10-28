@@ -5,7 +5,9 @@
 #include "rtweekend.h"
 #include "aabb.h"
 
-// don't understand this line
+// In C++ we add the line 'class material;' to tell the compiler that material is a class that will be 
+// defined later. Since we're just specifying a pointer to the class, the compiler doesn't need to know
+// the details of the class, solving the circular reference issue.
 class material;
 
 // hit_record is just a way to stuff a bunch of arguments into a class so we can send them as a group.
