@@ -4,6 +4,7 @@
 #include "rtweekend.h"
 #include "color.h"
 #include "rtw_stb_image.h"
+#include "perlin.h"
 
 class texture {
     public:
@@ -51,27 +52,39 @@ class checker_texture : public texture {
 };
 
 class image_texture : public texture {
-  public:
-    image_texture(const char* filename) : image(filename) {}
+    public:
+        image_texture(const char* filename) : image(filename) {}
 
-    color value(double u, double v, const point3& p) const override {
-        // If we have no texture data, then return solid cyan as a debugging aid.
-        if (image.height() <= 0) return color(0,1,1);
+        color value(double u, double v, const point3& p) const override {
+            // If we have no texture data, then return solid cyan as a debugging aid.
+            if (image.height() <= 0) return color(0,1,1);
 
-        // Clamp input texture coordinates to [0,1] x [1,0]
-        u = interval(0,1).clamp(u);
-        v = 1.0 - interval(0,1).clamp(v);  // Flip V to image coordinates
+            // Clamp input texture coordinates to [0,1] x [1,0]
+            u = interval(0,1).clamp(u);
+            v = 1.0 - interval(0,1).clamp(v);  // Flip V to image coordinates
 
-        auto i = static_cast<int>(u * image.width());
-        auto j = static_cast<int>(v * image.height());
-        auto pixel = image.pixel_data(i,j);
+            auto i = static_cast<int>(u * image.width());
+            auto j = static_cast<int>(v * image.height());
+            auto pixel = image.pixel_data(i,j);
 
-        auto color_scale = 1.0 / 255.0;
-        return color(color_scale*pixel[0], color_scale*pixel[1], color_scale*pixel[2]);
-    }
+            auto color_scale = 1.0 / 255.0;
+            return color(color_scale*pixel[0], color_scale*pixel[1], color_scale*pixel[2]);
+        }
 
-  private:
-    rtw_image image;
+    private:
+        rtw_image image;
+};
+
+class noise_texture : public texture {
+    public:
+        noise_texture() {}
+
+        color value(double u, double v, const point3& p) const override {
+            return color(1,1,1)*noise.noise(p);
+        }
+
+    private:
+        perlin noise;
 };
 
 #endif
