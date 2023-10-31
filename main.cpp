@@ -125,16 +125,16 @@ void earth() {
 void two_perlin_sphere() {
     hittable_list world;
 
-    auto pertext = make_shared<noise_texture>();
+    auto pertext = make_shared<noise_texture>(4);
     world.add(make_shared<sphere>(point3(0, -1000, 0), 1000, make_shared<lambertian>(pertext)));
     world.add(make_shared<sphere>(point3(0,2,0), 2, make_shared<lambertian>(pertext)));
 
     camera cam;
 
     cam.aspect_ratio = 16.0/9.0;
-    cam.image_width = 400;
-    cam.samples_per_pixel = 100;
-    cam.max_depth = 50;
+    cam.image_width = 800;
+    cam.samples_per_pixel = 200;
+    cam.max_depth = 100;
 
     cam.vfov = 20;
     cam.lookfrom = point3(13,2,3);

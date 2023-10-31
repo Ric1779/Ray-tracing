@@ -76,15 +76,20 @@ class image_texture : public texture {
 };
 
 class noise_texture : public texture {
-    public:
-        noise_texture() {}
+  public:
+    noise_texture() {}
 
-        color value(double u, double v, const point3& p) const override {
-            return color(1,1,1)*noise.noise(p);
-        }
+    noise_texture(double sc) : scale(sc) {}
 
-    private:
-        perlin noise;
+    color value(double u, double v, const point3& p) const override {
+        //return color(1,1,1) * 0.5 * (1+ noise.noise(p * scale));
+        auto s = scale * p;
+        return color(1,1,1) * 0.5 * (1 + sin(s.z() + 5*noise.turb(s)));
+    }
+
+  private:
+    perlin noise;
+    double scale;
 };
 
 #endif
