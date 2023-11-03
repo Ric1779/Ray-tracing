@@ -30,9 +30,7 @@ class rtw_image {
 
         // Hunt for the image file in some likely locations.
         if (imagedir && load(std::string(imagedir) + "/" + image_filename)) return;
-        // std::clog<<"1";
         if (load(filename)) return;
-        // std::clog<<"2";
         if (load("images/" + filename)) return;
         if (load("../images/" + filename)) return;
         if (load("../../images/" + filename)) return;

@@ -63,6 +63,7 @@ class perlin {
     int* perm_y;
     int* perm_z;
 
+    // used when lattice points were considered as random float points rather than random vectors
     static double trilinear_interp(double c[2][2][2], double u, double v, double w) {
         auto accum = 0.0;
         for(size_t i=0;i<2;i++)
