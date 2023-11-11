@@ -98,7 +98,7 @@ class dielectric : public material {
     }
 };
 
-class diffuse_light: public material {
+class diffuse_light : public material {
     public:
         diffuse_light(shared_ptr<texture> a) : emit(a) {}
         diffuse_light(color c) : emit(make_shared<solid_color>(c)) {}
@@ -112,6 +112,22 @@ class diffuse_light: public material {
         }
     private:
         shared_ptr<texture> emit;
+};
+
+class isotropic : public material {
+  public:
+    isotropic(color c) : albedo(make_shared<solid_color>(c)) {}
+    isotropic(shared_ptr<texture> a) : albedo(a) {}
+
+    bool scatter(const ray& r_in, const hit_record& rec, color& attenuation, ray& scattered)
+    const override {
+        scattered = ray(rec.p, random_unit_vector(), r_in.time());
+        attenuation = albedo->value(rec.u, rec.v, rec.p);
+        return true;
+    }
+
+  private:
+    shared_ptr<texture> albedo;
 };
 
 #endif
